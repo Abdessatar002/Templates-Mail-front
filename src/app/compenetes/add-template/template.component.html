@@ -1,0 +1,41 @@
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2>
+                Add Template
+            </h2>
+        </div>
+        <form #addTemplateForm="ngForm" (ngSubmit)="saveTemplate(addTemplateForm)">
+          <div class="card-body">
+            <input type="text" [ngModel]="editTemplate.id" name="id" hidden>
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Template name</span>
+                <input type="text" ngModel name="name" [(ngModel)]="editTemplate.name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+              </div>
+              <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Title</span>
+                <input type="text" ngModel name="title" [(ngModel)]="editTemplate.title" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+              </div>
+              
+              <div class="form-floating mb-3">
+                <textarea class="form-control" style="height:130px ;" [(ngModel)]="editTemplate.body"  name="body" placeholder="Leave a comment here" id="floatingTextarea" cols="30" rows="10"></textarea>
+                <label for="floatingTextarea">Body</label>
+              </div>
+
+              <div class="form-floating">
+                <textarea  style="height: 200px" class="form-control" [(ngModel)]="editTemplate.htmlTemplate"  name="htmlTemplate" placeholder="Leave a comment here" id="floatingTextarea" cols="30" rows="10"></textarea>
+                <label for="floatingTextarea">Template</label>
+              </div>
+        </div>
+        <div class="card-footer">
+            <button type="button" routerLink="/templates" class="btn btn-outline-danger me-1">Back</button>
+            <button type="submit" *ngIf="!isRoutHasTemplateId" class="btn btn-outline-success">Save Template</button>
+            <button type="button" (click)="editeTemplate(addTemplateForm)" *ngIf="isRoutHasTemplateId" class="btn btn-outline-success">Update Template</button>
+        </div>
+        </form>
+
+    </div>
+</div>
+
+
+<div [innerHTML]=" template | safeHtml"></div>

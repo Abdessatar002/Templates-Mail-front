@@ -1,0 +1,22 @@
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <p><b>Sent at : </b> {{email?.createdAt | date: 'MM-dd-yyyy HH:mm'}}</p>
+            <p><b>From : </b> {{email?.from}}</p>
+            <p><b>To : </b>
+            <span *ngFor="let recipient of email.recipients">
+                    <<   <u>{{recipient?.recipientEmail}}</u> >> <span> </span>
+            </span></p>
+            <p><b>Subject : </b> {{email?.subject}}</p>
+            <p><b>Title : </b> {{email?.title}}</p>
+            <p><b>Message : </b> {{email?.message}}</p>
+
+        </div>
+        <div class="card-footer">
+            <button (click)="location.back()"mat-raised-button>
+                <mat-icon>keyboard_return</mat-icon> Back
+            </button>
+        </div>
+    </div>
+</div>

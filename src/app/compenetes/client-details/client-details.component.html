@@ -1,0 +1,21 @@
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h1>{{routeEmail}}</h1>
+        </div>
+        <div class="card-body">
+            <div *ngFor="let email of this.emails" class="card mb-1 hover">
+                <div class="card-body">
+                    <p><b>Sent at : </b> {{email?.createdAt | date: 'MM-dd-yyyy HH:mm'}}</p>
+                    <p><b>From : </b> {{email?.from}}</p>
+                    <p><b>Subject : </b> {{email?.subject}}</p>
+                    <p><b>Title : </b> {{email?.title}}</p>
+                    <p class="two-ligne-text"><b>Message : </b> {{email?.message}}</p>
+                    <a routerLink="/email/{{email?.id}}">Details</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer">footer</div>
+    </div>
+</div>

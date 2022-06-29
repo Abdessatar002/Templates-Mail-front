@@ -1,0 +1,111 @@
+
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <div class="push-right">
+                <div class="">
+                    <h2>Templates</h2>
+                </div>
+                <div style="display: flex;">
+                    <div>
+                        <input (keyup.enter)="getTemplateBySearchValue(serchValue.value)" #serchValue class="form-control me-3" type="search">
+                    </div>
+                    <div>
+                        <button (click)="getTemplateBySearchValue(serchValue.value)" mat-stroked-button color="primary" class="me-2"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div>
+                        <!--  add Template -->
+                        <button routerLink="/add-template" mat-raised-button>Add Template</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <div class="table-responsive ">
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Message</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let template of templates" >
+                        <td style="white-space:nowrap;">{{template.id}}</td>
+                        <td  style="white-space:nowrap;" >{{template.name}}</td>
+                        <td style="white-space:nowrap;" >{{template.title}}</td>
+                        <td><p class="two-ligne-text">{{template.body}}</p></td>
+                        <td>
+                            
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                              </button>
+                              <mat-menu #menu="matMenu">
+                                <button mat-menu-item data-bs-toggle="modal"  (click)="rewieTemplate(template)" data-bs-target="#review-template2">
+                                    <mat-icon>visibility</mat-icon>
+                                    <span>Review</span>
+                                  </button>
+                                <button  routerLink="/edit-template/{{template.id}}"mat-menu-item>
+                                  <mat-icon>edit</mat-icon>
+                                  <span>Edit</span>
+                                </button>
+                                <button (click)="deleteTemplate(template.id)" mat-menu-item>
+                                  <mat-icon>delete</mat-icon>
+                                  <span>Delete</span>
+                                </button>
+                              </mat-menu>
+                        </td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+        <div class="card-footer push-right">
+
+          <div style="display: flex;">
+            <ngb-pagination [boundaryLinks]="true" [(page)]="page" [pageSize]="size" [collectionSize]="totalElements" (pageChange)="getTemplates()">
+            </ngb-pagination>
+    
+            <div class="pt-2">
+              <span class="ps-4 pe-2" >Size :</span>
+            </div>
+            <div>
+              <div class="pt-2">
+                <select  #pageSize (change)="changePageSize(pageSize.value)" >
+                <option value="1">1</option>
+    
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option selected value="15">15</option>
+                <option value="25">25</option>
+              </select>
+              </div>
+              
+              
+            </div>
+          </div>
+    
+        </div>
+    </div>
+</div>
+
+
+<!-- review-template -->
+<div class="modal fade" id="review-template2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+      <div class="modal-content">
+        
+        <div [innerHtml]="htmlTemplate|safeHtml" class="modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" mat-raised-button data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

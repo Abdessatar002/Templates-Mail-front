@@ -1,0 +1,209 @@
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <div class="push-right">
+        <div>
+          <h2>Recipients</h2>
+        </div>
+        <div style="display: flex;">
+          
+            <div>
+              <input (keyup.enter)="getRecipientBySearchValue(serchValue.value)" #serchValue class="form-control me-2" type="search">
+            </div>
+            <div>
+              <button  (click)="getRecipientBySearchValue(serchValue.value)" mat-stroked-button color="primary" class="me-2"><i class="fas fa-search"></i></button>
+            </div>
+          
+          <div>
+            <!-- Button trigger modal add client -->
+            <button mat-raised-button data-bs-toggle="modal" data-bs-target="#addclient">Add</button>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="table-responsive">
+            <table class="table table-hover table-sm">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">E-mail</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="cursor: pointer;" *ngFor="let client of clients ; let i=index">
+                  <td (click)="getEmails(client)" scope="col"><input #email id="{{client.id}}"
+                       [checked]="listEmails.includes(client.recipientEmail)" name="isCheked"  type="checkbox" class="switch-input"></td>
+                  <td  (click)="getEmails(client)">{{client?.id}}</td>
+                  <td (click)="getEmails(client)">{{client?.name}}</td>
+                  <td (click)="getEmails(client)">{{client?.recipientEmail}}</td>
+                  <td>
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item routerLink="{{client.recipientEmail}}">
+                        <mat-icon>visibility</mat-icon>
+                        <span>Review</span>
+                      </button>
+                      <button mat-menu-item (click)="onEditClient(client)" data-bs-toggle="modal" data-bs-target="#updateclient">
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit</span>
+                      </button>
+                      <button (click)="delteClient(client.id)" mat-menu-item>
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete</span>
+                      </button>
+                    </mat-menu>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="listEmails.length!=0" class="col-md-4">
+          <div class="card">
+            <div class="card-header">Selected E-mails</div>
+            <div class="card-body">
+              <p *ngFor="let email of listEmails; let i = index">
+                {{email}}
+                <button mat-icon-button (click)="removeEmailFromList(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+
+
+              </p>
+                
+            </div>
+            <div class="card-footer">
+              <div>
+                <button mat-mini class="me-2" mat-stroked-button (click)="valider()" routerLink="/validate-email">
+                  
+                  Send({{listEmails.length}})
+                </button>
+                <button mat-mini color="warn" (click)="clearEmailList()" mat-stroked-button color="warn">
+                  <mat-icon>clear</mat-icon>
+                  Clear
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="card-footer push-right">
+
+      <div style="display: flex;">
+        <ngb-pagination [boundaryLinks]="true" [(page)]="page" [pageSize]="size" [collectionSize]="totalElements" (pageChange)="getClients()">
+        </ngb-pagination>
+
+        <div class="pt-2">
+          <span class="ps-4 pe-2" >Size :</span>
+        </div>
+        <div>
+          <div class="pt-2">
+            <select  #pageSize (change)="changePageSize(pageSize.value)" >
+            <option value="1">1</option>
+
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option selected value="15">15</option>
+            <option value="25">25</option>
+          </select>
+          </div>
+          
+          
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal add client -->
+<div class="modal fade" id="addclient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div> -->
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-header">
+            <h2>Add Recipient</h2>
+          </div>
+
+          <form #addClientForm="ngForm" (ngSubmit)="addClient(addClientForm)">
+            <div class="card-body">
+              <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
+                <input type="text" name="name" ngModel class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-sm">
+              </div>
+              <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">E-Mail</span>
+                <input type="text" name="recipientEmail" ngModel class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-sm">
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button type="button" id="close-module-add-client" class="btn btn-outline-danger me-1"
+                data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-outline-success">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal update client -->
+<div class="modal fade" id="updateclient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div> -->
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-header">
+            <h2>Update Recipient</h2>
+          </div>
+
+          <form #updateClientForm="ngForm" (ngSubmit)="updateClient(updateClientForm)">
+            <div class="card-body">
+              <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
+                <input type="text" name="name" [(ngModel)]="client.name" class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-sm">
+              </div>
+              <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">E-Mail</span>
+                <input type="text" name="recipientEmail" [(ngModel)]="client.recipientEmail" class="form-control" aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-sm">
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button type="button" id="close-update-modal" class="btn btn-outline-danger me-1"
+                data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-outline-success">Update</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

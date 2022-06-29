@@ -1,0 +1,115 @@
+
+<div class="container">
+    <mat-tab-group>
+        <!-- tab1 -->
+        <mat-tab  label="Templates">
+            <div class="container">
+                <div class="row">
+                    <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
+                        <div class="MultiCarousel-inner">
+                            
+                                <div  *ngFor="let template of templates"  class="item">
+                                    <div class="pad15">
+                                    <label for="{{template.id}}">
+                                        <p class="lead">{{template.name}}</p>
+                                        <p>{{template.title}}</p>
+                                        <input type="radio" name="templateRadio"  [(ngModel)]="template1"  [value]="template" id="{{template.id}}">
+                                    </label>
+                                </div>
+                                    
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+
+        <!-- tabe2 -->
+        <mat-tab label="Second">
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>
+                                E-mails
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <p *ngFor="let email of clientEmail">{{email}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>
+                                card header
+                            </h2>
+                        </div>
+                        <form #sendEmailForm="ngForm" (ngSubmit)="sendEmail(sendEmailForm)">
+                                            <div class="card-body">
+                            <div class="input-group input-group-sm mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Subject</span>
+                                <input type="text" #subject="ngModel" required ngModel name="subject" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                
+                                
+                                <span *ngIf="subject.invalid" style="color: red; font-size: larger;" class="input-group-text" id="inputGroup-sizing-sm">*</span>
+
+                                
+                            </div>
+                              <div class="input-group input-group-sm mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Title</span>
+                                <input type="text" #title="ngModel" required [(ngModel)]="template1.title" name="title"  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                <span *ngIf="title.invalid" style="color: red; font-size: larger;" class="input-group-text" id="inputGroup-sizing-sm">*</span>
+                              
+                            </div>
+                              
+                              <div class="form-floating" style="display: flex;">
+                                <textarea style="height: 150px;" class="form-control" #body="ngModel" required [(ngModel)]="template1.body" name="body" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                                <label for="floatingTextarea">Body</label>
+                                <span *ngIf="body.invalid" style="color: red; font-size:x-large;" >*</span>
+
+                              </div>
+                        </div>
+                        <div style="display: flex;" class="card-footer ">
+                            <button type="button" class="btn btn-outline-info me-1" data-bs-toggle="modal"  (click)="rewieTemplate(sendEmailForm)" data-bs-target="#review-template">Review</button>
+                            <button type="submit" [disabled]="sendEmailForm.invalid" class="btn btn-outline-success">Send</button>
+
+                            
+                        </div>
+                        </form>
+        
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+
+        <!-- tabe3 -->
+        <mat-tab label="Third"> Content 3 </mat-tab>
+      </mat-tab-group>
+
+      <br>
+      <hr>
+    <div>
+        <button routerLink="/client" mat-raised-button>
+            <mat-icon>keyboard_return</mat-icon> Back
+        </button>
+    </div>
+</div>
+
+
+
+  <!-- review-template -->
+  <div class="modal fade" id="review-template" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+      <div class="modal-content">
+        <div [innerHtml]="htmlTemplate|safeHtml" class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" mat-raised-button data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

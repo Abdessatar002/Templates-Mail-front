@@ -1,0 +1,86 @@
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <div class="push-right">
+                <div class="">
+                    <h2>Emails History</h2>
+                </div>
+                <div style="display: flex;">
+                    <div>
+                        <input (keyup.enter)="getRecipientBySearchValue(serchValue.value)" #serchValue class="form-control me-3" type="search">
+                    </div>
+                    <div>
+                        <button (click)="getRecipientBySearchValue(serchValue.value)" mat-stroked-button color="primary" class="me-2"><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <div class="table-responsive ">
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Created at</th>
+                        <th>From</th>
+                        <th>Subject</th>
+                        <th>Header</th>
+                        <th>Message</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let email of emails" >
+                        <td style="white-space:nowrap;">{{email?.id}}</td>
+                        <td  style="white-space:nowrap;" >{{email?.createdAt | date:'dd-MM-yyyy HH:mm'}}</td>
+                        <td  style="white-space:nowrap;" class="one-" >{{email?.from}}</td>
+                        <td  style="white-space:nowrap;" >{{email?.title}}</td>
+                        <td  style="white-space:nowrap;" >{{email?.subject}}</td>
+                        <td><p class="one-ligne-text">{{email?.message}}</p></td>
+                        <td>
+                            
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                              </button>
+                              <mat-menu #menu="matMenu">
+                                <button routerLink="/email/{{email.id}}" mat-menu-item>
+                                    <mat-icon>visibility</mat-icon>
+                                    <span>Review</span>
+                                  </button>
+                              </mat-menu>
+                        </td>
+                      </tr>
+                    </tbody>
+                    
+                  </table>
+                  <div *ngIf="totalElements==0" class="alert alert-danger">No Data Found.</div>
+
+
+            </div>
+        </div>
+        <div class="card-footer push-right">
+          <div style="display: flex;">
+            <ngb-pagination [boundaryLinks]="true" [(page)]="page" [pageSize]="size" [collectionSize]="totalElements" (pageChange)="getEmailsPagenation()">
+            </ngb-pagination>
+    
+            <div class="pt-2">
+              <span class="ps-4 pe-2" >Size :</span>
+            </div>
+            <div>
+              <div class="pt-2">
+                <select  #pageSize (change)="changePageSize(pageSize.value)" >
+                <option value="1">1</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option selected value="15">15</option>
+                <option value="25">25</option>
+              </select>
+              </div>
+            </div>
+          </div>
+         </div>
+    </div>
+</div>
